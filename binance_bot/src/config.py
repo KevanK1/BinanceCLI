@@ -1,5 +1,5 @@
 """
-Configuration module for Binance Futures CLI Bot.
+Configuration module for Binance SPOT CLI Bot.
 Loads API credentials from environment variables and configures testnet.
 """
 
@@ -16,21 +16,21 @@ load_dotenv(dotenv_path=env_path)
 API_KEY = os.getenv("API_KEY")
 API_SECRET = os.getenv("API_SECRET")
 
-# Binance Futures Testnet Configuration
+# Binance SPOT Testnet Configuration
 TESTNET = True
-TESTNET_BASE_URL = "https://testnet.binancefuture.com"
+TESTNET_BASE_URL = "https://testnet.binance.vision"
 
 # Validate required configuration
 def validate_config():
     """Validate that required configuration is present."""
     if not API_KEY:
         print("ERROR: API_KEY environment variable is not set.")
-        print("Please set API_KEY with your Binance Futures Testnet API key.")
+        print("Please set API_KEY with your Binance SPOT API key.")
         sys.exit(1)
     
     if not API_SECRET:
         print("ERROR: API_SECRET environment variable is not set.")
-        print("Please set API_SECRET with your Binance Futures Testnet API secret.")
+        print("Please set API_SECRET with your Binance SPOT API secret.")
         sys.exit(1)
     
     return True

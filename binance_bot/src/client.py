@@ -1,8 +1,9 @@
 """
-Binance Futures Client Wrapper.
-Provides abstraction layer for all Binance API calls.
+Binance SPOT Client Wrapper.
+Provides abstraction layer for all Binance SPOT API calls.
 """
 
+import time
 from binance.client import Client
 from binance.exceptions import BinanceAPIException, BinanceOrderException
 
@@ -13,23 +14,39 @@ logger = get_logger()
 
 
 class BinanceClient:
-    """Wrapper class for Binance Futures API operations."""
+    """Wrapper class for Binance SPOT API operations."""
     
-    # New Binance Demo Trading API endpoint (replaces old testnet)
-    FUTURES_TESTNET_URL = "https://testnet.binancefuture.com"
+    # Binance SPOT Testnet API endpoint
+    SPOT_TESTNET_URL = "https://testnet.binance.vision"
     
     def __init__(self):
         """Initialize the Binance client with testnet configuration."""
         validate_config()
         
-        # Initialize client with testnet enabled
+        # Initialize client with testnet enabled for SPOT trading
         self.client = Client(API_KEY, API_SECRET, testnet=TESTNET)
         
-        # Override the futures API URL to use demo endpoint
-        self.client.FUTURES_URL = self.FUTURES_TESTNET_URL + "/fapi/v1"
+        # Override the API URL to use SPOT testnet endpoint
+        self.client.API_URL = self.SPOT_TESTNET_URL + "/api"
         
-        logger.info("Binance Futures client initialized (Testnet: %s)", TESTNET)
-        logger.info("Using Futures API URL: %s", self.client.FUTURES_URL)
+        # Sync time with Binance server to fix timestamp issues
+        try:
+            server_time = self.client.get_server_time()
+            local_time = int(time.time() * 1000)
+            self.time_offset = server_time['serverTime'] - local_time
+            logger.info("Time offset with Binance server: %dms", self.time_offset)
+            
+            # Apply time offset to client
+            self.client.timestamp_offset = self.time_offset
+        except Exception as e:
+            logger.warning("Could not sync time with server: %s", str(e))
+            self.time_offset = 0
+        
+        # Set default recvWindow to handle potential remaining timestamp issues
+        self.recv_window = 60000  # 60 seconds tolerance
+        
+        logger.info("Binance SPOT client initialized (Testnet: %s)", TESTNET)
+        logger.info("Using SPOT API URL: %s", self.client.API_URL)
     
     def place_market_order(self, symbol: str, side: str, quantity: float) -> dict:
         """
@@ -49,11 +66,12 @@ class BinanceClient:
         )
         
         try:
-            response = self.client.futures_create_order(
+            response = self.client.create_order(
                 symbol=symbol,
                 side=side,
                 type="MARKET",
-                quantity=quantity
+                quantity=quantity,
+                recvWindow=self.recv_window
             )
             logger.info("MARKET order placed successfully: orderId=%s", response.get("orderId"))
             logger.debug("Full response: %s", response)
@@ -90,13 +108,14 @@ class BinanceClient:
         )
         
         try:
-            response = self.client.futures_create_order(
+            response = self.client.create_order(
                 symbol=symbol,
                 side=side,
                 type="LIMIT",
                 quantity=quantity,
                 price=price,
-                timeInForce="GTC"
+                timeInForce="GTC",
+                recvWindow=self.recv_window
             )
             logger.info("LIMIT order placed successfully: orderId=%s", response.get("orderId"))
             logger.debug("Full response: %s", response)
@@ -142,14 +161,17 @@ class BinanceClient:
         )
         
         try:
-            response = self.client.futures_create_order(
+            # SPOT uses STOP_LOSS_LIMIT for SELL and TAKE_PROFIT_LIMIT is not standard
+            # Use STOP_LOSS_LIMIT for both sides in SPOT trading
+            response = self.client.create_order(
                 symbol=symbol,
                 side=side,
-                type="STOP",
+                type="STOP_LOSS_LIMIT",
                 quantity=quantity,
                 price=limit_price,
                 stopPrice=stop_price,
-                timeInForce="GTC"
+                timeInForce="GTC",
+                recvWindow=self.recv_window
             )
             logger.info("STOP-LIMIT order placed successfully: orderId=%s", response.get("orderId"))
             logger.debug("Full response: %s", response)

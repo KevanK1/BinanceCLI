@@ -1,5 +1,5 @@
 """
-Logger module for Binance Futures CLI Bot.
+Logger module for Binance SPOT CLI Bot.
 Provides a single global logger instance used by all modules.
 """
 

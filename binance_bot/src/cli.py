@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Binance Futures CLI Bot - Command Line Interface.
+Binance SPOT CLI Bot - Command Line Interface.
 Main entry point for all trading commands.
 """
 
@@ -22,7 +22,7 @@ def create_parser() -> argparse.ArgumentParser:
     """Create and configure the argument parser."""
     parser = argparse.ArgumentParser(
         prog="binance-bot",
-        description="Binance Futures CLI Trading Bot",
+        description="Binance SPOT CLI Trading Bot",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:

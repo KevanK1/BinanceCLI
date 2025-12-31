@@ -1,5 +1,5 @@
 """
-Input Validator for Binance Futures CLI Bot.
+Input Validator for Binance SPOT CLI Bot.
 Validates all user inputs before they reach the Binance API.
 """
 
