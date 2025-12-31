@@ -197,6 +197,15 @@ Make sure you've set your API credentials as environment variables or in a `.env
 2. Navigate to "Open Orders" or "Order History"
 3. Check `bot.log` for any error messages
 
+## License
+
+Copyright © 2025 Kevan
+
+Licensed under the Apache License, Version 2.0.
+You may obtain a copy of the License at:
+
+http://www.apache.org/licenses/LICENSE-2.0
+
 ## Disclaimer
 
 This bot is for **educational purposes** and testnet trading only. Do not use with real funds without proper testing and risk management.
