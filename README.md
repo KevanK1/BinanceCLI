@@ -2,6 +2,8 @@
 
 A command-line trading bot for Binance Futures Testnet with support for market, limit, stop-limit, TWAP, and grid orders.
 
+![alt text](image.png)
+
 ## Features
 
 - **Market Orders** - Execute instant market orders

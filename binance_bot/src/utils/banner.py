@@ -40,7 +40,7 @@ ASCII_ART = [
 ]
 
 # Signature text
-SIGNATURE = "Made with ❤️   by Kevan"
+SIGNATURE = "Made with ❤️  by Kevan"
 
 
 def get_gradient_color(line_index: int, total_lines: int) -> str:
@@ -98,7 +98,7 @@ def print_banner():
     print()
     sig_box_width = len(SIGNATURE) + 6
     print(f"  {BOX_BORDER}╭{'─' * sig_box_width}╮{RESET}")
-    print(f"  {BOX_BORDER}│{RESET}  {apply_horizontal_gradient(SIGNATURE, start_color_idx=2)}  {BOX_BORDER}   │{RESET}")
+    print(f"  {BOX_BORDER}│{RESET}  {apply_horizontal_gradient(SIGNATURE, start_color_idx=2)}  {BOX_BORDER}  │{RESET}")
     print(f"  {BOX_BORDER}╰{'─' * sig_box_width}╯{RESET}")
     
     print()
