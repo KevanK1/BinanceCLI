@@ -14,6 +14,7 @@ from strategies.twap import execute_twap_strategy
 from strategies.grid import execute_grid_strategy
 from validators.input_validator import ValidationError
 from utils.logger import get_logger
+from utils.banner import print_banner
 
 logger = get_logger()
 
@@ -92,6 +93,9 @@ Examples:
 
 def main():
     """Main entry point for the CLI."""
+    # Display the stylish ASCII art banner
+    print_banner()
+    
     parser = create_parser()
     args = parser.parse_args()
     
