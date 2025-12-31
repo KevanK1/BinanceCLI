@@ -1,0 +1,5 @@
+python-binance>=1.0.19
+python-dotenv>=1.0.0
+"""
+See the new keys i gave are from the API Management section of Binance idk if its SPOT or Futures but as the existing code is Futures API focused and not working pointing the API for it that clearly deduces that the API we have is of SPOT so now refactor the whole code
+"""
